@@ -8,7 +8,7 @@ struct SidebarView: View {
             VStack(alignment: .leading, spacing: 16) {
                 brandHeader
 
-                sidebarSection("Monitor", items: [.status, .diskAnalyzer])
+                sidebarSection("Monitor", items: [.status, .monitor, .processes, .diskAnalyzer])
                 sidebarSection("Cleanup", items: [.clean, .purge, .installer, .optimize, .uninstall])
                 sidebarSection("App", items: [.settings])
             }

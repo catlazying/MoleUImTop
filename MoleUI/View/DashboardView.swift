@@ -101,8 +101,12 @@ struct UsageBar: View {
 
     private var barColor: Color {
         guard autoThreshold else { return color }
-        if percent >= 85 { return .red }
-        if percent >= 60 { return .yellow }
+        if percent >= 85 {
+            return .red
+        }
+        if percent >= 60 {
+            return .yellow
+        }
         return color
     }
 
@@ -144,7 +148,9 @@ struct MiniSparklineView: View {
         let maxVal = padded.max().flatMap { $0 > 0 ? $0 : nil } ?? 1
         let sparkline: String = padded.map { val in
             // Always show baseline (▁), even when there's traffic
-            if val <= 0 { return blocks[0] }
+            if val <= 0 {
+                return blocks[0]
+            }
             let idx = Int((val / maxVal) * Double(blocks.count - 1))
             return blocks[max(1, min(idx, blocks.count - 1))]
         }.joined()
@@ -160,6 +166,8 @@ struct MiniSparklineView: View {
 
 struct DashboardView: View {
     @Environment(MetricsModel.self) var service
+    @Environment(MonitorModel.self) var monitor
+    @Binding var selection: SidebarItem?
 
     var body: some View {
         Group {
@@ -167,6 +175,7 @@ struct DashboardView: View {
                 ScrollView {
                     VStack(spacing: 16) {
                         headerBar(snap)
+                        hardwareMonitorCard
                         MoleAnimationView()
                         equalHeightRow {
                             cpuCard(snap.cpu, thermal: snap.thermal)
@@ -200,10 +209,85 @@ struct DashboardView: View {
         .task {
             // Start metrics collection when Dashboard appears
             service.start()
+            monitor.start()
         }
         .onDisappear {
-            // Stop metrics collection when Dashboard disappears
+            // Stop Mole status polling when Dashboard disappears.
+            // Hardware monitor keeps running for Monitor / Processes screens.
             service.stop()
+        }
+    }
+
+    // MARK: - Hardware monitor (mactop)
+
+    @ViewBuilder
+    private var hardwareMonitorCard: some View {
+        if !monitor.isSupported {
+            GroupBox {
+                HStack {
+                    Label("Hardware Monitor", systemImage: "gauge.with.dots.needle.67percent")
+                        .font(.headline)
+                    Spacer()
+                    Text("Unavailable on Intel")
+                        .foregroundStyle(.secondary)
+                }
+                .font(.system(.caption, design: .monospaced))
+                .padding(.vertical, 4)
+            }
+        } else {
+            Button {
+                selection = .monitor
+            } label: {
+                GroupBox {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Label("Hardware Monitor", systemImage: "gauge.with.dots.needle.67percent")
+                                .font(.headline)
+                            Spacer()
+                            Text("Open")
+                                .foregroundStyle(MoleTheme.pine)
+                        }
+
+                        if let m = monitor.latestMetrics {
+                            let memUsed = MetricsFormatter.humanBytes(m.memory.used)
+                            let memTotal = MetricsFormatter.humanBytes(m.memory.total)
+                            HStack(spacing: 16) {
+                                compactMetric("CPU", String(format: "%.0f%%", m.cpuUsage))
+                                compactMetric("GPU", String(format: "%.0f%%", m.gpuUsage))
+                                compactMetric("RAM", "\(memUsed) / \(memTotal)")
+                                compactMetric("Temp", String(format: "%.0f°C", m.socMetrics.cpuTemp))
+                                compactMetric("Power", String(format: "%.1f W", m.socMetrics.totalPower))
+                            }
+                            if case .degraded = monitor.runtimeStatus {
+                                Text(monitor.runtimeStatus.bannerMessage ?? "Monitoring degraded")
+                                    .foregroundStyle(MoleTheme.ember)
+                                    .lineLimit(2)
+                            }
+                        } else if let error = monitor.errorMessage {
+                            Text(error)
+                                .foregroundStyle(.secondary)
+                        } else {
+                            Text(monitor.isRunning ? "Sampling…" : "Starting…")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .font(.system(.caption, design: .monospaced))
+                    .padding(.vertical, 4)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private func compactMetric(_ title: String, _ value: String) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(title.uppercased())
+                .font(.system(size: 10, weight: .semibold, design: .rounded))
+                .foregroundStyle(.secondary)
+            Text(value)
+                .font(.system(size: 13, weight: .semibold, design: .rounded))
+                .foregroundStyle(MoleTheme.ink)
         }
     }
 

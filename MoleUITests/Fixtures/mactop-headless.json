@@ -1,0 +1,372 @@
+{
+  "timestamp": "2026-09-28T17:10:53+09:00",
+  "soc_metrics": {
+    "cpu_power": 0,
+    "gpu_power": 0.31158133463695753,
+    "ane_power": 0,
+    "dram_power": 0,
+    "gpu_sram_power": 0,
+    "system_power": 24.446011820270268,
+    "total_power": 24.757593154907227,
+    "gpu_freq_mhz": 338,
+    "gpu_active": 54.02518897121098,
+    "e_cluster_active": 77.63761669092217,
+    "p_cluster_active": 71.13138466378388,
+    "e_cluster_freq_mhz": 1959,
+    "p_cluster_freq_mhz": 4010,
+    "soc_temp": 51.18394,
+    "cpu_temp": 51.18394,
+    "gpu_temp": 47.673954,
+    "dram_read_bw_gbs": 0,
+    "dram_write_bw_gbs": 0,
+    "dram_bw_combined_gbs": 0,
+    "ane_read_bw_gbs": 0,
+    "ane_write_bw_gbs": 0,
+    "ane_bw_combined_gbs": 0,
+    "ane_active": 0
+  },
+  "memory": {
+    "total": 25769803776,
+    "used": 15315304448,
+    "available": 10454499328,
+    "swap_total": 0,
+    "swap_used": 0
+  },
+  "net_disk": {
+    "out_packets_per_sec": 22.25631885515208,
+    "out_bytes_per_sec": 3067.947952956348,
+    "in_packets_per_sec": 39.37656412834599,
+    "in_bytes_per_sec": 4382.782789937641,
+    "read_ops_per_sec": 85.17322023413969,
+    "write_ops_per_sec": 18.8322698005133,
+    "read_kbytes_per_sec": 1268.6101747436685,
+    "write_kbytes_per_sec": 323.57263566336485
+  },
+  "cpu_usage": 21.962640117389004,
+  "ecpu_usage": [
+    1959,
+    77.63761669092217
+  ],
+  "pcpu_usage": [
+    4010,
+    71.13138466378388
+  ],
+  "gpu_usage": 54.02518897121098,
+  "gpu_metrics": {
+    "freq_mhz": 338,
+    "active_percent": 54.02518897121098
+  },
+  "tflops_fp32": 8.07936,
+  "tflops_fp16": 16.15872,
+  "display_fps": 119,
+  "frame_interval_ms": 8.391,
+  "core_usages": [
+    54.78260869565217,
+    44.58874458874459,
+    35.4978354978355,
+    28.75536480686695,
+    13.675213675213676,
+    13.733905579399142,
+    11.688311688311687,
+    12.875536480686694,
+    13.36206896551724,
+    17.167381974248926,
+    15.450643776824036,
+    17.52136752136752,
+    16.30901287553648,
+    12.068965517241379
+  ],
+  "system_info": {
+    "name": "Apple M4 Pro",
+    "core_count": 14,
+    "e_core_count": 4,
+    "p_core_count": 10,
+    "gpu_core_count": 20
+  },
+  "thermal_state": "\uc815\uc0c1",
+  "processes": [
+    {
+      "pid": 88676,
+      "command": "mactop",
+      "cpu_percent": 0,
+      "gpu_ms_per_sec": 0,
+      "memory_percent": 0.2194086710611979,
+      "rss_kb": 55216
+    },
+    {
+      "pid": 88616,
+      "command": "biomesyncd",
+      "cpu_percent": 0,
+      "gpu_ms_per_sec": 0,
+      "memory_percent": 0.024477640787760418,
+      "rss_kb": 6160
+    },
+    {
+      "pid": 88593,
+      "command": "mdworker_shared",
+      "cpu_percent": 0,
+      "gpu_ms_per_sec": 0,
+      "memory_percent": 0.06745656331380209,
+      "rss_kb": 16976
+    }
+  ],
+  "network_links": {
+    "ethernet": [
+      {
+        "name": "en4",
+        "link_up": false,
+        "speed_mbps": 0,
+        "speed_formatted": "--"
+      },
+      {
+        "name": "en5",
+        "link_up": false,
+        "speed_mbps": 0,
+        "speed_formatted": "--"
+      },
+      {
+        "name": "en6",
+        "link_up": false,
+        "speed_mbps": 0,
+        "speed_formatted": "--"
+      },
+      {
+        "name": "en1",
+        "link_up": false,
+        "speed_mbps": 0,
+        "speed_formatted": "--"
+      },
+      {
+        "name": "en2",
+        "link_up": false,
+        "speed_mbps": 0,
+        "speed_formatted": "--"
+      },
+      {
+        "name": "en3",
+        "link_up": false,
+        "speed_mbps": 0,
+        "speed_formatted": "--"
+      }
+    ],
+    "wifi": {
+      "interface": "en0",
+      "phy_mode": "802.11ax",
+      "generation": "Wi-Fi 6",
+      "tx_rate_mbps": 243,
+      "connected": true
+    }
+  },
+  "volumes": [
+    {
+      "name": "Macintosh HD",
+      "total_gb": 994.66258432,
+      "used_gb": 931.005558784,
+      "used_percent": 93.60013872648894
+    },
+    {
+      "name": "External",
+      "total_gb": 994.66258432,
+      "used_gb": 931.005558784,
+      "used_percent": 93.60013872648894
+    }
+  ],
+  "thunderbolt_info": {
+    "buses": [
+      {
+        "name": "TB5 Bus 1",
+        "status": "Inactive",
+        "icon": "\u25cb",
+        "speed": "Up to 80 Gb/s",
+        "domain_uuid": "0",
+        "switch_uid": "0x05ACF781092F6DD1",
+        "receptacle_id": "2",
+        "network_stats": {
+          "interface_name": "en2",
+          "bytes_in": 0,
+          "bytes_out": 0,
+          "bytes_in_per_sec": 0,
+          "bytes_out_per_sec": 0,
+          "packets_in": 0,
+          "packets_out": 0
+        }
+      },
+      {
+        "name": "TB5 Bus 2",
+        "status": "Inactive",
+        "icon": "\u25cb",
+        "speed": "Up to 80 Gb/s",
+        "domain_uuid": "0",
+        "switch_uid": "0x05ACF781092F6DD2",
+        "receptacle_id": "3",
+        "network_stats": {
+          "interface_name": "en3",
+          "bytes_in": 0,
+          "bytes_out": 0,
+          "bytes_in_per_sec": 0,
+          "bytes_out_per_sec": 0,
+          "packets_in": 0,
+          "packets_out": 0
+        }
+      },
+      {
+        "name": "TB5 Bus 0",
+        "status": "Inactive",
+        "icon": "\u25cb",
+        "speed": "Up to 80 Gb/s",
+        "domain_uuid": "0",
+        "switch_uid": "0x05ACF781092F6DD0",
+        "receptacle_id": "1",
+        "network_stats": {
+          "interface_name": "en1",
+          "bytes_in": 0,
+          "bytes_out": 0,
+          "bytes_in_per_sec": 0,
+          "bytes_out_per_sec": 0,
+          "packets_in": 0,
+          "packets_out": 0
+        }
+      }
+    ]
+  },
+  "tb_net_total_bytes_in_per_sec": 0,
+  "tb_net_total_bytes_out_per_sec": 0,
+  "rdma_status": {
+    "available": false,
+    "status": "Disabled"
+  },
+  "fans": [
+    {
+      "id": 0,
+      "name": "Fan 0",
+      "rpm": 4083,
+      "target_rpm": 4100,
+      "min_rpm": 2317,
+      "max_rpm": 7826,
+      "mode": "manual"
+    },
+    {
+      "id": 1,
+      "name": "Fan 1",
+      "rpm": 4086,
+      "target_rpm": 4100,
+      "min_rpm": 2317,
+      "max_rpm": 7826,
+      "mode": "manual"
+    }
+  ],
+  "temperatures": [
+    {
+      "group": "CPU E-Core",
+      "avg_celsius": 52.4,
+      "min_celsius": 46.4,
+      "max_celsius": 57,
+      "sensor_count": 10
+    },
+    {
+      "group": "CPU P-Core",
+      "avg_celsius": 53.1,
+      "min_celsius": 36.1,
+      "max_celsius": 73.2,
+      "sensor_count": 65
+    },
+    {
+      "group": "CPU Die",
+      "avg_celsius": 65,
+      "min_celsius": 56.8,
+      "max_celsius": 73.2,
+      "sensor_count": 2
+    },
+    {
+      "group": "GPU",
+      "avg_celsius": 46.5,
+      "min_celsius": 43.6,
+      "max_celsius": 52.3,
+      "sensor_count": 39
+    },
+    {
+      "group": "SoC Package",
+      "avg_celsius": 44,
+      "min_celsius": 42.7,
+      "max_celsius": 46,
+      "sensor_count": 19
+    },
+    {
+      "group": "Memory",
+      "avg_celsius": 41.7,
+      "min_celsius": 41.7,
+      "max_celsius": 41.7,
+      "sensor_count": 1
+    },
+    {
+      "group": "SSD",
+      "avg_celsius": 44.7,
+      "min_celsius": 29.4,
+      "max_celsius": 49.2,
+      "sensor_count": 32
+    },
+    {
+      "group": "NAND",
+      "avg_celsius": 34.1,
+      "min_celsius": 34.1,
+      "max_celsius": 34.1,
+      "sensor_count": 3
+    },
+    {
+      "group": "NVMe",
+      "avg_celsius": 33.9,
+      "min_celsius": 33.9,
+      "max_celsius": 33.9,
+      "sensor_count": 1
+    },
+    {
+      "group": "Ambient",
+      "avg_celsius": 23.2,
+      "min_celsius": 8.3,
+      "max_celsius": 41.6,
+      "sensor_count": 14
+    },
+    {
+      "group": "VRM",
+      "avg_celsius": 49.9,
+      "min_celsius": 24.2,
+      "max_celsius": 81.6,
+      "sensor_count": 19
+    },
+    {
+      "group": "Board",
+      "avg_celsius": 32.5,
+      "min_celsius": 32.2,
+      "max_celsius": 32.6,
+      "sensor_count": 3
+    },
+    {
+      "group": "Wireless",
+      "avg_celsius": 41,
+      "min_celsius": 41,
+      "max_celsius": 41,
+      "sensor_count": 1
+    },
+    {
+      "group": "Display",
+      "avg_celsius": 32.3,
+      "min_celsius": 28.9,
+      "max_celsius": 37.1,
+      "sensor_count": 23
+    },
+    {
+      "group": "Other",
+      "avg_celsius": 39.2,
+      "min_celsius": 38.3,
+      "max_celsius": 40.4,
+      "sensor_count": 17
+    }
+  ],
+  "battery": {
+    "present": true,
+    "percent": 48,
+    "charging": false,
+    "on_ac_power": false,
+    "state": "Battery Power"
+  }
+}

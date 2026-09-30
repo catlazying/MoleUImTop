@@ -3,6 +3,8 @@ import SwiftUI
 
 enum SidebarItem: String, CaseIterable, Identifiable {
     case status = "Status"
+    case monitor = "Hardware"
+    case processes = "Processes"
     case diskAnalyzer = "Disk Analyzer"
     case clean = "Clean"
     case purge = "Purge"
@@ -18,6 +20,8 @@ enum SidebarItem: String, CaseIterable, Identifiable {
     var icon: String {
         switch self {
         case .status: "waveform.path.ecg"
+        case .monitor: "gauge.with.dots.needle.67percent"
+        case .processes: "list.bullet.rectangle"
         case .diskAnalyzer: "internaldrive"
         case .clean: "trash"
         case .purge: "folder.badge.minus"
@@ -344,7 +348,11 @@ struct ContentView: View {
     private var detailView: some View {
         switch selectedItem {
         case .status:
-            DashboardView()
+            DashboardView(selection: $selectedItem)
+        case .monitor:
+            MonitorView()
+        case .processes:
+            ProcessListView()
         case .diskAnalyzer:
             DiskAnalyzerView()
         case .clean:

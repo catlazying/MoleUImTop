@@ -57,6 +57,14 @@ update-mole:
     cp /opt/homebrew/Cellar/mole/*/bin/mole Resources/mole/
     sed -i '' 's|SCRIPT_DIR=.*|SCRIPT_DIR="$$(cd \\"$$(dirname \\"$${BASH_SOURCE[0]}\\")\\" \&\& pwd)"|' Resources/mole/mole
 
+# Place local mactop arm64 binary for Monitor (gitignored)
+update-mactop:
+    brew upgrade mactop || brew install mactop
+    mkdir -p Resources/mactop
+    cp /opt/homebrew/bin/mactop Resources/mactop/mactop
+    chmod +x Resources/mactop/mactop
+    @file Resources/mactop/mactop
+
 # ============================================
 # Release
 # ============================================

@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct MoleApp: App {
     @State private var metricsModel = MetricsModel()
+    @State private var monitorModel = MonitorModel()
     @State private var cleanModel = CleanModel()
     @State private var optimizeModel = OptimizeModel()
     @State private var purgeModel = PurgeModel()
@@ -17,6 +18,7 @@ struct MoleApp: App {
         WindowGroup {
             ContentView()
                 .environment(metricsModel)
+                .environment(monitorModel)
                 .environment(cleanModel)
                 .environment(optimizeModel)
                 .environment(purgeModel)
@@ -34,6 +36,8 @@ struct MoleApp: App {
                     // This must be done after models are initialized
                     metricsModel.cleanModel = cleanModel
                     metricsModel.optimizeModel = optimizeModel
+                    // Start Apple Silicon monitor once; no-op / error path on Intel.
+                    monitorModel.start()
                 }
         }
         .defaultSize(width: 1120, height: 760)

@@ -34,6 +34,24 @@
 		F32A25D13722F0BA914A232D /* ErrorTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE3A3CCA1B2FB0C00DAD376 /* ErrorTranslator.swift */; };
 		F4589CC8DAEFA56B33CD550D /* OptimizeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E1B7E83866D954771C6A2 /* OptimizeView.swift */; };
 		FF236E9F77EC3CF3D05AA0E1 /* CleanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85568217C772E3741C36A21 /* CleanView.swift */; };
+		F8AF260D2C745027877D290A /* SystemMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B05EF7D7FE5DB09BBB6D74 /* SystemMetrics.swift */; };
+		3BC919E9D7B65A89A1A7010C /* MactopAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A84D856BB8551A91FE9550 /* MactopAdapter.swift */; };
+		34AEBE18EC7653E1A84AC23F /* HeadlessJSONAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC5F0B279A55A58B645819D /* HeadlessJSONAdapter.swift */; };
+		E8C4A91B2F7D3041A6B85E01 /* MonitorErrorMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C4A91B2F7D3041A6B85E02 /* MonitorErrorMapper.swift */; };
+		E8C4A91B2F7D3041A6B85E03 /* MonitorStatusBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C4A91B2F7D3041A6B85E04 /* MonitorStatusBanner.swift */; };
+		2487EEEFC1625E668322E832 /* MonitorService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183BF56248195DB3BEE09BF4 /* MonitorService.swift */; };
+		B5B02160FF305C30AAAF132A /* MonitorSampler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970073150C9E57A1BD64BFE8 /* MonitorSampler.swift */; };
+		025138050E7950CA86AEDFB2 /* MonitorHistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CC6848BCB4859F68CB0E755 /* MonitorHistoryStore.swift */; };
+		415B958143C959CEA38D9210 /* MonitorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD9005231BE5DEB8868986B /* MonitorModel.swift */; };
+		D7DB17DB85AC57E5ADAF2F6B /* MonitorCoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F6EF3012A9566F94656556 /* MonitorCoreTests.swift */; };
+		E8C4A91B2F7D3041A6B85E11 /* MonitorPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C4A91B2F7D3041A6B85E12 /* MonitorPerformanceTests.swift */; };
+		E8C4A91B2F7D3041A6B85E21 /* MonitorReleaseHardeningTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C4A91B2F7D3041A6B85E22 /* MonitorReleaseHardeningTests.swift */; };
+		D56EA179E485510BA3F07B5C /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4F24859A493F51BC97FDDA2C /* LICENSE */; };
+		33D5D680AC345ABDA3E0A7FB /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = A97EFE1E80D95AACBF3D6095 /* README.md */; };
+		3920D2C063CE51F38690BA40 /* MonitorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6688CD699A9E5B3E9C273FFC /* MonitorView.swift */; };
+		D6C5AC24168255EF97CA2E88 /* ProcessListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FC42EDE3E7A5E2F90604F9A /* ProcessListView.swift */; };
+		F054C1956AC356D185FC4122 /* ProcessService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85979495C63B5CF5A4B79736 /* ProcessService.swift */; };
+		29A2A38E04705FC789275414 /* MonitorChartsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57AE427B3F35DDA991989D7 /* MonitorChartsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +97,24 @@
 		F3FA1BBA1A27FBCE12FAB812 /* MoleCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleCoreTests.swift; sourceTree = "<group>"; };
 		FA83B140E1CA8258B27D0DB7 /* MoleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoleApp.swift; sourceTree = "<group>"; };
 		FBD57E8C4DB424E21B6455F8 /* SudoHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SudoHelper.swift; sourceTree = "<group>"; };
+		D2B05EF7D7FE5DB09BBB6D74 /* SystemMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMetrics.swift; sourceTree = "<group>"; };
+		56A84D856BB8551A91FE9550 /* MactopAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MactopAdapter.swift; sourceTree = "<group>"; };
+		0EC5F0B279A55A58B645819D /* HeadlessJSONAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeadlessJSONAdapter.swift; sourceTree = "<group>"; };
+		E8C4A91B2F7D3041A6B85E02 /* MonitorErrorMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorErrorMapper.swift; sourceTree = "<group>"; };
+		E8C4A91B2F7D3041A6B85E04 /* MonitorStatusBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorStatusBanner.swift; sourceTree = "<group>"; };
+		183BF56248195DB3BEE09BF4 /* MonitorService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorService.swift; sourceTree = "<group>"; };
+		970073150C9E57A1BD64BFE8 /* MonitorSampler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorSampler.swift; sourceTree = "<group>"; };
+		6CC6848BCB4859F68CB0E755 /* MonitorHistoryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorHistoryStore.swift; sourceTree = "<group>"; };
+		7AD9005231BE5DEB8868986B /* MonitorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorModel.swift; sourceTree = "<group>"; };
+		E0F6EF3012A9566F94656556 /* MonitorCoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorCoreTests.swift; sourceTree = "<group>"; };
+		E8C4A91B2F7D3041A6B85E12 /* MonitorPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorPerformanceTests.swift; sourceTree = "<group>"; };
+		E8C4A91B2F7D3041A6B85E22 /* MonitorReleaseHardeningTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorReleaseHardeningTests.swift; sourceTree = "<group>"; };
+		4F24859A493F51BC97FDDA2C /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A97EFE1E80D95AACBF3D6095 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		6688CD699A9E5B3E9C273FFC /* MonitorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorView.swift; sourceTree = "<group>"; };
+		5FC42EDE3E7A5E2F90604F9A /* ProcessListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessListView.swift; sourceTree = "<group>"; };
+		85979495C63B5CF5A4B79736 /* ProcessService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessService.swift; sourceTree = "<group>"; };
+		F57AE427B3F35DDA991989D7 /* MonitorChartsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorChartsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -86,6 +122,9 @@
 			isa = PBXGroup;
 			children = (
 				F3FA1BBA1A27FBCE12FAB812 /* MoleCoreTests.swift */,
+				E0F6EF3012A9566F94656556 /* MonitorCoreTests.swift */,
+				E8C4A91B2F7D3041A6B85E12 /* MonitorPerformanceTests.swift */,
+				E8C4A91B2F7D3041A6B85E22 /* MonitorReleaseHardeningTests.swift */,
 			);
 			path = MoleUITests;
 			sourceTree = "<group>";
@@ -96,6 +135,10 @@
 				E85568217C772E3741C36A21 /* CleanView.swift */,
 				D318DDC275BE6B3CD128F65C /* ContentView.swift */,
 				CEB0C4BC3B51B5F199D3A140 /* DashboardView.swift */,
+				5FC42EDE3E7A5E2F90604F9A /* ProcessListView.swift */,
+				6688CD699A9E5B3E9C273FFC /* MonitorView.swift */,
+				E8C4A91B2F7D3041A6B85E04 /* MonitorStatusBanner.swift */,
+				F57AE427B3F35DDA991989D7 /* MonitorChartsView.swift */,
 				D91DD675B485F4BFABAAC40B /* DiskAnalyzerView.swift */,
 				43C1897658A5457CF58EF7BD /* InstallerView.swift */,
 				FA83B140E1CA8258B27D0DB7 /* MoleApp.swift */,
@@ -118,6 +161,7 @@
 				1BE3A3CCA1B2FB0C00DAD376 /* ErrorTranslator.swift */,
 				BB33333333333333BBBBBBBB /* InstallerModel.swift */,
 				BB44444444444444BBBBBBBB /* MetricsModel.swift */,
+				7AD9005231BE5DEB8868986B /* MonitorModel.swift */,
 				BB55555555555555BBBBBBBB /* OptimizeModel.swift */,
 				BB66666666666666BBBBBBBB /* PurgeModel.swift */,
 				8B5D757BF68A417AB45A5E9F /* SafetyController.swift */,
@@ -146,6 +190,9 @@
 				BB87FF57E870C70574208B01 /* MoleUI.entitlements */,
 				73B2452274F0BCDD5161C412 /* View */,
 				8E76565342F4E89743A414CB /* Model */,
+				25EAC3016B7E5DCBA7CBF204 /* Models */,
+				FBC19659585C5D90AF492AE9 /* MonitorCore */,
+				A3D70A33F3CC5065AA787B6F /* Services */,
 			
 				568727435DA94E75A6EF82BD /* .mole-cli-version */,);
 			path = MoleUI;
@@ -156,8 +203,56 @@
 			children = (
 				AC2EF9D6AC8B8A1419BCF1C4 /* MoleUI */,
 				1EA75BD21F1E2057809E711F /* MoleUITests */,
+				63BFDA0DD6F55F189F40CFAA /* Resources */,
 				9646630512C737DF4EC1CC93 /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+
+		25EAC3016B7E5DCBA7CBF204 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D2B05EF7D7FE5DB09BBB6D74 /* SystemMetrics.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FBC19659585C5D90AF492AE9 /* MonitorCore */ = {
+			isa = PBXGroup;
+			children = (
+				56A84D856BB8551A91FE9550 /* MactopAdapter.swift */,
+				0EC5F0B279A55A58B645819D /* HeadlessJSONAdapter.swift */,
+				E8C4A91B2F7D3041A6B85E02 /* MonitorErrorMapper.swift */,
+			);
+			path = MonitorCore;
+			sourceTree = "<group>";
+		};
+		A3D70A33F3CC5065AA787B6F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				183BF56248195DB3BEE09BF4 /* MonitorService.swift */,
+				85979495C63B5CF5A4B79736 /* ProcessService.swift */,
+				970073150C9E57A1BD64BFE8 /* MonitorSampler.swift */,
+				6CC6848BCB4859F68CB0E755 /* MonitorHistoryStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		72BDD132B1D8556E8448B1DA /* mactop */ = {
+			isa = PBXGroup;
+			children = (
+				4F24859A493F51BC97FDDA2C /* LICENSE */,
+				A97EFE1E80D95AACBF3D6095 /* README.md */,
+			);
+			path = mactop;
+			sourceTree = "<group>";
+		};
+		63BFDA0DD6F55F189F40CFAA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				72BDD132B1D8556E8448B1DA /* mactop */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,6 +263,7 @@
 			buildConfigurationList = 613AF449066A25E72576101C /* Build configuration list for PBXNativeTarget "MoleUI" */;
 			buildPhases = (
 				412AA1AC0EDE3E68D4EFBD77 /* Copy Mole CLI */,
+				3F216684D7E85612839380BB /* Copy mactop */,
 				E0E1F03D7A6B19692D494387 /* Sources */,
 				3A2DF482894C973B4D8CE6C0 /* Resources */,
 			);
@@ -241,7 +337,10 @@
 			files = (
 				E7B5322A3242D44AE9DF7526 /* Assets.xcassets in Resources */,
 			
-				AEF193D74543417B9EBA6DFA /* .mole-cli-version in Resources */,);
+				AEF193D74543417B9EBA6DFA /* .mole-cli-version in Resources */,
+				D56EA179E485510BA3F07B5C /* LICENSE in Resources */,
+				33D5D680AC345ABDA3E0A7FB /* README.md in Resources */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
@@ -266,6 +365,26 @@
 			shellPath = /bin/sh;
 			shellScript = "# Copy Mole CLI to app bundle\nMOLE_DIR=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Resources/mole\"\nmkdir -p \"$MOLE_DIR\"\n\n# Copy from project Resources directory\nif [ -d \"${PROJECT_DIR}/Resources/mole/bin\" ]; then\n  cp -R \"${PROJECT_DIR}/Resources/mole/\"* \"$MOLE_DIR/\"\n  echo \"Mole CLI copied to app bundle\"\nelse\n  echo \"WARNING: Resources/mole not found\"\nfi\n";
 		};
+
+		3F216684D7E85612839380BB /* Copy mactop */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy mactop";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Copy mactop binary + LICENSE into app bundle\nMACTOP_DIR=\"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Resources/mactop\"\nmkdir -p \"$MACTOP_DIR\"\n\nSRC_DIR=\"${PROJECT_DIR}/Resources/mactop\"\nif [ -x \"${SRC_DIR}/mactop\" ]; then\n  cp -f \"${SRC_DIR}/mactop\" \"$MACTOP_DIR/mactop\"\n  chmod +x \"$MACTOP_DIR/mactop\"\n  echo \"mactop copied from Resources/mactop\"\nelif [ -x \"/opt/homebrew/bin/mactop\" ]; then\n  cp -f \"/opt/homebrew/bin/mactop\" \"$MACTOP_DIR/mactop\"\n  chmod +x \"$MACTOP_DIR/mactop\"\n  echo \"mactop copied from Homebrew\"\nelse\n  echo \"WARNING: mactop binary not found (Monitor will be unavailable until Resources/mactop/mactop is provided)\"\nfi\n\nif [ -f \"${SRC_DIR}/LICENSE\" ]; then\n  cp -f \"${SRC_DIR}/LICENSE\" \"$MACTOP_DIR/LICENSE\"\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -274,6 +393,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A316280BF713757D3BC6275 /* MoleCoreTests.swift in Sources */,
+				D7DB17DB85AC57E5ADAF2F6B /* MonitorCoreTests.swift in Sources */,
+				E8C4A91B2F7D3041A6B85E11 /* MonitorPerformanceTests.swift in Sources */,
+				E8C4A91B2F7D3041A6B85E21 /* MonitorReleaseHardeningTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -305,6 +427,19 @@
 				AA88888888888888AAAAAAAA /* UninstallModel.swift in Sources */,
 				9965125018C98EE33BC95D6E /* UninstallView.swift in Sources */,
 				AA99999999999999AAAAAAAA /* VersionModel.swift in Sources */,
+				F8AF260D2C745027877D290A /* SystemMetrics.swift in Sources */,
+				3BC919E9D7B65A89A1A7010C /* MactopAdapter.swift in Sources */,
+				34AEBE18EC7653E1A84AC23F /* HeadlessJSONAdapter.swift in Sources */,
+				E8C4A91B2F7D3041A6B85E01 /* MonitorErrorMapper.swift in Sources */,
+				E8C4A91B2F7D3041A6B85E03 /* MonitorStatusBanner.swift in Sources */,
+				2487EEEFC1625E668322E832 /* MonitorService.swift in Sources */,
+				B5B02160FF305C30AAAF132A /* MonitorSampler.swift in Sources */,
+				025138050E7950CA86AEDFB2 /* MonitorHistoryStore.swift in Sources */,
+				415B958143C959CEA38D9210 /* MonitorModel.swift in Sources */,
+				3920D2C063CE51F38690BA40 /* MonitorView.swift in Sources */,
+				29A2A38E04705FC789275414 /* MonitorChartsView.swift in Sources */,
+				D6C5AC24168255EF97CA2E88 /* ProcessListView.swift in Sources */,
+				F054C1956AC356D185FC4122 /* ProcessService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,6 +2,7 @@ excluded:
   - MoleUI.xcodeproj
   - MoleUITests
   - .build
+  - build
 
 disabled_rules:
   - trailing_whitespace
