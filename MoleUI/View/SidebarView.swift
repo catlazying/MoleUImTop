@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct SidebarView: View {
+    @Environment(LocalizationStore.self) private var localization
     @Binding var selection: SidebarItem?
 
     var body: some View {
@@ -8,9 +9,9 @@ struct SidebarView: View {
             VStack(alignment: .leading, spacing: 16) {
                 brandHeader
 
-                sidebarSection("Monitor", items: [.status, .monitor, .processes, .diskAnalyzer])
-                sidebarSection("Cleanup", items: [.clean, .purge, .installer, .optimize, .uninstall])
-                sidebarSection("App", items: [.settings])
+                sidebarSection(localization.t("sidebar.section.monitor"), items: [.status, .monitor, .processes, .diskAnalyzer])
+                sidebarSection(localization.t("sidebar.section.cleanup"), items: [.clean, .purge, .installer, .optimize, .uninstall])
+                sidebarSection(localization.t("sidebar.section.app"), items: [.settings])
             }
             .padding(.horizontal, 14)
             .padding(.top, 50)
@@ -33,7 +34,7 @@ struct SidebarView: View {
                     .font(.system(size: 18, weight: .bold, design: .rounded))
                     .foregroundStyle(MoleTheme.ink)
 
-                Text("System care for macOS")
+                Text(localization.t("sidebar.brand.subtitle"))
                     .font(.system(size: 10, weight: .medium, design: .rounded))
                     .foregroundStyle(.secondary)
             }
@@ -69,7 +70,7 @@ struct SidebarView: View {
                     .foregroundStyle(isSelected ? Color.white : MoleTheme.pine)
                     .frame(width: 24, height: 24)
 
-                Text(item.rawValue)
+                Text(localization.t(item.titleKey))
                     .font(.system(size: 13, weight: .semibold, design: .rounded))
                     .foregroundStyle(isSelected ? Color.white : MoleTheme.ink)
 

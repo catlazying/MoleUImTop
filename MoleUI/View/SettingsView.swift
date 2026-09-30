@@ -6,25 +6,19 @@ enum FullDiskAccessStatus: Equatable {
     case notGranted
     case unknown
 
-    var title: String {
+    var titleKey: String {
         switch self {
-        case .granted:
-            "Full Disk Access appears enabled"
-        case .notGranted:
-            "Full Disk Access is not enabled"
-        case .unknown:
-            "Full Disk Access could not be confirmed"
+        case .granted: "settings.fda.granted.title"
+        case .notGranted: "settings.fda.notGranted.title"
+        case .unknown: "settings.fda.unknown.title"
         }
     }
 
-    var detail: String {
+    var detailKey: String {
         switch self {
-        case .granted:
-            "Broad disk scans should be able to inspect protected Library content without repeated folder-by-folder interruptions."
-        case .notGranted:
-            "macOS does not provide a one-shot prompt for Full Disk Access. Mole UI can guide you to the correct System Settings page so you can enable it yourself."
-        case .unknown:
-            "Mole UI could not positively verify Full Disk Access yet. Refresh after changing System Settings, or try Disk Analyzer again."
+        case .granted: "settings.fda.granted.detail"
+        case .notGranted: "settings.fda.notGranted.detail"
+        case .unknown: "settings.fda.unknown.detail"
         }
     }
 }
@@ -142,12 +136,14 @@ enum FullDiskAccessHelper {
 
 struct SettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(LocalizationStore.self) private var localization
     @State private var fullDiskAccessStatus = FullDiskAccessHelper.status()
 
     var body: some View {
         ScrollView {
             VStack(spacing: 18) {
                 heroCard
+                languageCard
                 aboutCard
                 permissionsCard
                 cliOnlyCard
@@ -161,15 +157,33 @@ struct SettingsView: View {
 
     private var heroCard: some View {
         MoleHeroPanel(
-            eyebrow: "Control Room",
-            title: "Settings",
-            subtitle: "Version details, disk-scan privacy guidance, and a short list of upstream CLI tools that still live outside this GUI.",
+            eyebrow: localization.t("settings.hero.eyebrow"),
+            title: localization.t("settings.hero.title"),
+            subtitle: localization.t("settings.hero.subtitle"),
             symbol: "gearshape.2.fill"
         )
     }
 
+    private var languageCard: some View {
+        settingsCard(title: localization.t("lang.section"), symbol: "globe") {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(localization.t("lang.section.detail"))
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Picker(localization.t("lang.section"), selection: Bindable(localization).language) {
+                    ForEach(AppLanguage.allCases) { lang in
+                        Text(localization.t(lang.displayNameKey)).tag(lang)
+                    }
+                }
+                .pickerStyle(.segmented)
+            }
+        }
+    }
+
     private var aboutCard: some View {
-        settingsCard(title: "About", symbol: "info.circle") {
+        settingsCard(title: localization.t("settings.about"), symbol: "info.circle") {
             VStack(alignment: .leading, spacing: 14) {
                 MoleVersionView(bundledCLIVersion: readMoleCLIVersion())
 
@@ -185,11 +199,11 @@ struct SettingsView: View {
     }
 
     private var permissionsCard: some View {
-        settingsCard(title: "Disk Access & Privacy", symbol: "hand.raised") {
+        settingsCard(title: localization.t("settings.permissions"), symbol: "hand.raised") {
             VStack(alignment: .leading, spacing: 12) {
                 statusPill(
-                    title: fullDiskAccessStatus.title,
-                    detail: fullDiskAccessStatus.detail,
+                    title: localization.t(fullDiskAccessStatus.titleKey),
+                    detail: localization.t(fullDiskAccessStatus.detailKey),
                     tint: fullDiskAccessTint
                 )
 
@@ -197,35 +211,35 @@ struct SettingsView: View {
                     Button {
                         openFullDiskAccessSettings()
                     } label: {
-                        Label("Open Full Disk Access", systemImage: "lock.open.display")
+                        Label(localization.t("settings.fda.open"), systemImage: "lock.open.display")
                     }
                     .buttonStyle(.borderedProminent)
 
-                    Button("Refresh Status") {
+                    Button(localization.t("settings.fda.refresh")) {
                         refreshFullDiskAccessStatus()
                     }
 
-                    Button("Open Privacy & Security") {
+                    Button(localization.t("settings.fda.privacy")) {
                         openPrivacyAndSecuritySettings()
                     }
                 }
 
                 permissionTip(
-                    title: "Reduce repeated prompts",
-                    detail: "Desktop, Documents, Downloads, iCloud, and parts of Library all have separate privacy rules. Full Disk Access is the most reliable way to avoid repeated denials during broad scans."
+                    title: localization.t("settings.tip.prompts.title"),
+                    detail: localization.t("settings.tip.prompts.detail")
                 )
                 permissionTip(
-                    title: "When Full Disk Access helps",
-                    detail: "If you want to analyze your whole Home folder, app data, iCloud files, or deeper Library content, granting Full Disk Access will make Disk Analyzer much more consistent."
+                    title: localization.t("settings.tip.when.title"),
+                    detail: localization.t("settings.tip.when.detail")
                 )
             }
         }
     }
 
     private var cliOnlyCard: some View {
-        settingsCard(title: "Selected Upstream CLI Tools", symbol: "terminal") {
+        settingsCard(title: localization.t("settings.cli"), symbol: "terminal") {
             VStack(alignment: .leading, spacing: 10) {
-                Text("These are a few upstream Mole commands that stay outside the GUI. This is a guide to the most relevant ones, not a full command reference.")
+                Text(localization.t("settings.cli.intro"))
                     .font(.system(size: 12))
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

@@ -17,6 +17,21 @@ enum SidebarItem: String, CaseIterable, Identifiable {
         rawValue
     }
 
+    var titleKey: String {
+        switch self {
+        case .status: "sidebar.status"
+        case .monitor: "sidebar.hardware"
+        case .processes: "sidebar.processes"
+        case .diskAnalyzer: "sidebar.diskAnalyzer"
+        case .clean: "sidebar.clean"
+        case .purge: "sidebar.purge"
+        case .installer: "sidebar.installer"
+        case .optimize: "sidebar.optimize"
+        case .uninstall: "sidebar.uninstall"
+        case .settings: "sidebar.settings"
+        }
+    }
+
     var icon: String {
         switch self {
         case .status: "waveform.path.ecg"

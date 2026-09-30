@@ -13,6 +13,7 @@ struct MoleApp: App {
     @State private var uninstallModel = UninstallModel()
     @State private var safetyController = SafetyController()
     @State private var versionModel = VersionModel()
+    @State private var localizationStore = LocalizationStore()
 
     var body: some Scene {
         WindowGroup {
@@ -28,6 +29,7 @@ struct MoleApp: App {
                 .environment(uninstallModel)
                 .environment(safetyController)
                 .environment(versionModel)
+                .environment(localizationStore)
                 .groupBoxStyle(MolePanelGroupBoxStyle())
                 .tint(Color(red: 0.16, green: 0.48, blue: 0.36))
                 .frame(minWidth: 980, minHeight: 700)

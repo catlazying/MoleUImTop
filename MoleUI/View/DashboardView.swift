@@ -167,6 +167,7 @@ struct MiniSparklineView: View {
 struct DashboardView: View {
     @Environment(MetricsModel.self) var service
     @Environment(MonitorModel.self) var monitor
+    @Environment(LocalizationStore.self) private var localization
     @Binding var selection: SidebarItem?
 
     var body: some View {
@@ -177,15 +178,18 @@ struct DashboardView: View {
                         headerBar(snap)
                         hardwareMonitorCard
                         MoleAnimationView()
-                        equalHeightRow {
+                        LazyVGrid(
+                            columns: [
+                                GridItem(.flexible(), spacing: 12),
+                                GridItem(.flexible(), spacing: 12),
+                                GridItem(.flexible(), spacing: 12),
+                            ],
+                            spacing: 12
+                        ) {
                             cpuCard(snap.cpu, thermal: snap.thermal)
                             memoryCard(snap.memory)
-                        }
-                        equalHeightRow {
                             diskCard(snap.disks, io: snap.diskIO)
                             powerCard(snap.batteries, thermal: snap.thermal)
-                        }
-                        equalHeightRow {
                             processCard(snap.topProcesses)
                             networkCard(
                                 snap.network,
@@ -198,12 +202,12 @@ struct DashboardView: View {
                 }
             } else if let error = service.errorMessage {
                 ContentUnavailableView(
-                    "Connection Error",
+                    localization.t("status.connectionError"),
                     systemImage: "exclamationmark.triangle",
                     description: Text(error)
                 )
             } else {
-                MoleLoadingState(title: "Loading system metrics...")
+                MoleLoadingState(title: localization.t("status.loading"))
             }
         }
         .task {
@@ -225,10 +229,10 @@ struct DashboardView: View {
         if !monitor.isSupported {
             GroupBox {
                 HStack {
-                    Label("Hardware Monitor", systemImage: "gauge.with.dots.needle.67percent")
+                    Label(localization.t("status.hw.title"), systemImage: "gauge.with.dots.needle.67percent")
                         .font(.headline)
                     Spacer()
-                    Text("Unavailable on Intel")
+                    Text(localization.t("status.hw.unavailable"))
                         .foregroundStyle(.secondary)
                 }
                 .font(.system(.caption, design: .monospaced))
@@ -241,17 +245,25 @@ struct DashboardView: View {
                 GroupBox {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Label("Hardware Monitor", systemImage: "gauge.with.dots.needle.67percent")
+                            Label(localization.t("status.hw.title"), systemImage: "gauge.with.dots.needle.67percent")
                                 .font(.headline)
                             Spacer()
-                            Text("Open")
+                            Text(localization.t("status.hw.open"))
                                 .foregroundStyle(MoleTheme.pine)
                         }
 
                         if let m = monitor.latestMetrics {
                             let memUsed = MetricsFormatter.humanBytes(m.memory.used)
                             let memTotal = MetricsFormatter.humanBytes(m.memory.total)
-                            HStack(spacing: 16) {
+                            LazyVGrid(
+                                columns: [
+                                    GridItem(.flexible(), spacing: 12),
+                                    GridItem(.flexible(), spacing: 12),
+                                    GridItem(.flexible(), spacing: 12),
+                                ],
+                                alignment: .leading,
+                                spacing: 10
+                            ) {
                                 compactMetric("CPU", String(format: "%.0f%%", m.cpuUsage))
                                 compactMetric("GPU", String(format: "%.0f%%", m.gpuUsage))
                                 compactMetric("RAM", "\(memUsed) / \(memTotal)")
@@ -259,7 +271,7 @@ struct DashboardView: View {
                                 compactMetric("Power", String(format: "%.1f W", m.socMetrics.totalPower))
                             }
                             if case .degraded = monitor.runtimeStatus {
-                                Text(monitor.runtimeStatus.bannerMessage ?? "Monitoring degraded")
+                                Text(monitor.runtimeStatus.bannerMessage ?? localization.t("monitor.degraded.title"))
                                     .foregroundStyle(MoleTheme.ember)
                                     .lineLimit(2)
                             }
@@ -267,7 +279,7 @@ struct DashboardView: View {
                             Text(error)
                                 .foregroundStyle(.secondary)
                         } else {
-                            Text(monitor.isRunning ? "Sampling…" : "Starting…")
+                            Text(monitor.isRunning ? localization.t("status.hw.sampling") : localization.t("status.hw.starting"))
                                 .foregroundStyle(.secondary)
                         }
                     }
@@ -293,35 +305,24 @@ struct DashboardView: View {
 
     // MARK: - Header
 
-    private func equalHeightRow(
-        @ViewBuilder content: () -> TupleView<(some View, some View)>
-    ) -> some View {
-        let views = content()
-        return HStack(alignment: .top, spacing: 12) {
-            views.value.0.frame(maxHeight: .infinity, alignment: .top)
-            views.value.1.frame(maxHeight: .infinity, alignment: .top)
-        }
-        .fixedSize(horizontal: false, vertical: true)
-    }
-
     private func headerBar(_ snap: MetricsSnapshot) -> some View {
         let hw = snap.hardware
 
         return MoleHeroPanel(
-            eyebrow: "Monitor",
-            title: "Status",
+            eyebrow: localization.t("status.hero.eyebrow"),
+            title: localization.t("status.hero.title"),
             subtitle: "\(hw.model) · \(hw.cpuModel) · \(hw.totalRAM)/\(hw.diskSize) · \(hw.osVersion)",
             symbol: "waveform.path.ecg"
         ) {
             VStack(alignment: .trailing, spacing: 10) {
                 MoleMetricBadge(
-                    title: "Health",
+                    title: localization.t("status.health"),
                     value: "\(snap.healthScore)",
                     systemImage: "heart.circle.fill",
                     tint: snap.healthScore >= 75 ? .green : snap.healthScore >= 60 ? .orange : .red
                 )
                 MoleMetricBadge(
-                    title: "Uptime",
+                    title: localization.t("status.uptime"),
                     value: snap.uptime,
                     systemImage: "clock.arrow.circlepath",
                     tint: MoleTheme.sky
@@ -335,7 +336,7 @@ struct DashboardView: View {
     private func cpuCard(_ cpu: CPUStatus, thermal: ThermalStatus) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 6) {
-                Label("CPU", systemImage: "cpu").font(.headline)
+                Label(localization.t("status.cpu"), systemImage: "cpu").font(.headline)
                 HStack {
                     Text("Total").frame(width: 50, alignment: .leading)
                     UsageBar(cpu.usage)
@@ -373,7 +374,7 @@ struct DashboardView: View {
     private func memoryCard(_ mem: MemoryStatus) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 6) {
-                Label("Memory", systemImage: "memorychip").font(.headline)
+                Label(localization.t("status.memory"), systemImage: "memorychip").font(.headline)
                 HStack {
                     Text("Used").frame(width: 50, alignment: .leading)
                     UsageBar(mem.usedPercent, color: .yellow)
@@ -408,7 +409,7 @@ struct DashboardView: View {
     private func diskCard(_ disks: [DiskStatus], io: DiskIOStatus) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 6) {
-                Label("Disk", systemImage: "internaldrive").font(.headline)
+                Label(localization.t("status.disk"), systemImage: "internaldrive").font(.headline)
                 ForEach(disks.prefix(4), id: \.mount) { d in
                     let label = d.external ? "EXTR" : "INTR"
                     HStack {
@@ -444,7 +445,7 @@ struct DashboardView: View {
     private func powerCard(_ batteries: [BatteryStatus], thermal: ThermalStatus) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 6) {
-                Label("Power", systemImage: "battery.75percent").font(.headline)
+                Label(localization.t("status.power"), systemImage: "battery.75percent").font(.headline)
                 if let bat = batteries.first {
                     HStack {
                         Text("Level").frame(width: 50, alignment: .leading)
@@ -480,7 +481,7 @@ struct DashboardView: View {
         let items = Array(procs.prefix(5))
         return GroupBox {
             VStack(alignment: .leading, spacing: 6) {
-                Label("Processes", systemImage: "list.bullet").font(.headline)
+                Label(localization.t("status.processes"), systemImage: "list.bullet").font(.headline)
                 ForEach(items.indices, id: \.self) { i in
                     HStack {
                         Text(items[i].name)
@@ -509,7 +510,7 @@ struct DashboardView: View {
     ) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 6) {
-                Label("Network", systemImage: "network").font(.headline)
+                Label(localization.t("status.network"), systemImage: "network").font(.headline)
                 HStack {
                     Text("Down").frame(width: 40, alignment: .leading)
                     MiniSparklineView(data: history.rxHistory, color: .green)

@@ -9,26 +9,34 @@ enum MonitorRuntimeStatus: Equatable, Sendable {
     case degraded(message: String)
     case failed(message: String)
 
-    var bannerTitle: String? {
+    var bannerTitleKey: String? {
         switch self {
         case .unsupported:
-            "Apple Silicon monitoring unavailable"
+            "monitor.unsupported.title"
         case .degraded:
-            "Monitoring degraded"
+            "monitor.degraded.title"
         case .failed:
-            "Monitoring stopped"
+            "monitor.failed.title"
         case .idle, .starting, .running:
+            nil
+        }
+    }
+
+    /// Localized detail for `.unsupported`; raw collector text for degraded/failed.
+    var bannerMessageKey: String? {
+        switch self {
+        case .unsupported:
+            "monitor.unsupported.detail"
+        default:
             nil
         }
     }
 
     var bannerMessage: String? {
         switch self {
-        case .unsupported:
-            "Mole cleanup tools remain available on this Mac."
         case .degraded(let message), .failed(let message):
             message
-        case .idle, .starting, .running:
+        case .unsupported, .idle, .starting, .running:
             nil
         }
     }

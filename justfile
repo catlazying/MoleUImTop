@@ -26,6 +26,33 @@ build-release:
         -archivePath build/{{app_name}}.xcarchive \
         archive
 
+# Internal/ad-hoc Release app + zip under dist/ (no notarization)
+build-internal:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mkdir -p dist build/DerivedData
+    xcodebuild -scheme {{scheme}} \
+        -configuration Release \
+        -destination 'platform=macOS' \
+        -derivedDataPath "{{justfile_directory()}}/build/DerivedData" \
+        CODE_SIGN_IDENTITY="-" \
+        CODE_SIGNING_REQUIRED=NO \
+        CODE_SIGNING_ALLOWED=NO \
+        build
+    rm -rf "dist/{{app_name}}.app"
+    cp -R "build/DerivedData/Build/Products/Release/{{app_name}}.app" "dist/{{app_name}}.app"
+    if [ ! -x "dist/{{app_name}}.app/Contents/Resources/mactop/mactop" ] && [ -x Resources/mactop/mactop ]; then
+      mkdir -p "dist/{{app_name}}.app/Contents/Resources/mactop"
+      cp -f Resources/mactop/mactop "dist/{{app_name}}.app/Contents/Resources/mactop/mactop"
+      cp -f Resources/mactop/LICENSE "dist/{{app_name}}.app/Contents/Resources/mactop/" 2>/dev/null || true
+    fi
+    chmod +x "dist/{{app_name}}.app/Contents/Resources/mactop/mactop" 2>/dev/null || true
+    codesign --force --deep --sign - "dist/{{app_name}}.app"
+    ditto -c -k --keepParent "dist/{{app_name}}.app" "dist/MoleUI-internal.zip"
+    echo "Internal build ready:"
+    echo "  dist/{{app_name}}.app"
+    echo "  dist/MoleUI-internal.zip"
+
 # Run
 run: build
     @open ~/Library/Developer/Xcode/DerivedData/MoleUI-*/Build/Products/Debug/"{{app_name}}.app"

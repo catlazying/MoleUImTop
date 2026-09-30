@@ -171,6 +171,8 @@ struct MonitorHistoryChart: View {
 }
 
 struct MonitorChartsSection: View {
+    @Environment(LocalizationStore.self) private var localization
+
     let cpu: [Double]
     let gpu: [Double]
     let memory: [Double]
@@ -180,8 +182,8 @@ struct MonitorChartsSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             MoleSectionHeader(
-                title: "History",
-                subtitle: "Bounded in-memory samples · ~5 minutes at 1s",
+                title: localization.t("monitor.history"),
+                subtitle: localization.t("monitor.history.subtitle"),
                 symbol: "chart.xyaxis.line"
             )
 
@@ -189,43 +191,43 @@ struct MonitorChartsSection: View {
                 columns: [
                     GridItem(.flexible(), spacing: 12),
                     GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12),
                 ],
                 spacing: 12
             ) {
                 MonitorHistoryChart(
-                    title: "CPU",
+                    title: localization.t("monitor.chart.cpu"),
                     unitLabel: "%",
                     values: cpu,
                     tint: MonitorChartSeries.cpu.tint,
                     yDomain: 0 ... 100
                 )
                 MonitorHistoryChart(
-                    title: "GPU",
+                    title: localization.t("monitor.chart.gpu"),
                     unitLabel: "%",
                     values: gpu,
                     tint: MonitorChartSeries.gpu.tint,
                     yDomain: 0 ... 100
                 )
                 MonitorHistoryChart(
-                    title: "Memory",
+                    title: localization.t("monitor.chart.memory"),
                     unitLabel: "%",
                     values: memory,
                     tint: MonitorChartSeries.memory.tint,
                     yDomain: 0 ... 100
                 )
                 MonitorHistoryChart(
-                    title: "Power",
+                    title: localization.t("monitor.chart.power"),
                     unitLabel: "W",
                     values: power,
                     tint: MonitorChartSeries.power.tint
                 )
                 MonitorHistoryChart(
-                    title: "DRAM Bandwidth",
+                    title: localization.t("monitor.chart.dram"),
                     unitLabel: "GB/s",
                     values: dramBandwidth,
                     tint: MonitorChartSeries.dramBandwidth.tint
                 )
-                .gridCellColumns(2)
             }
         }
     }

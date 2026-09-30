@@ -366,7 +366,7 @@ actor MockMactopAdapter: MactopAdapter {
     #expect(MonitorRuntimeStatus.degraded(message: "x").isRetryable)
     #expect(!MonitorRuntimeStatus.running.isRetryable)
     #expect(!MonitorRuntimeStatus.unsupported.isRetryable)
-    #expect(MonitorRuntimeStatus.degraded(message: "gpu").bannerTitle == "Monitoring degraded")
+    #expect(MonitorRuntimeStatus.degraded(message: "gpu").bannerTitleKey == "monitor.degraded.title")
 }
 
 @Test func monitorServiceStopsAdapterAfterExhaustedRetries() async throws {

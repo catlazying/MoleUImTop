@@ -108,13 +108,20 @@ request_sudo_access() {
         return 0
     fi
 
-    # Detect if running in TTY environment
+    # Detect if running in TTY environment.
+    # NOTE: GUI apps may still have a readable /dev/tty node that fails on write
+    # with "Device not configured" — test actual I/O, not just -r/-w.
     local tty_path="/dev/tty"
     local is_gui_mode=false
 
-    if [[ ! -r "$tty_path" || ! -w "$tty_path" ]]; then
+    if [[ "${MOLE_GUI:-}" == "1" ]]; then
+        is_gui_mode=true
+    elif ! { : > /dev/tty; } 2> /dev/null; then
+        is_gui_mode=true
+    elif [[ ! -r "$tty_path" || ! -w "$tty_path" ]]; then
         tty_path=$(tty 2> /dev/null || echo "")
-        if [[ -z "$tty_path" || ! -r "$tty_path" || ! -w "$tty_path" ]]; then
+        if [[ -z "$tty_path" || ! -r "$tty_path" || ! -w "$tty_path" ]] ||
+            ! { : > "$tty_path"; } 2> /dev/null; then
             is_gui_mode=true
         fi
     fi
@@ -229,7 +236,8 @@ request_sudo_access() {
 
 # Global state
 MOLE_SUDO_KEEPALIVE_PID=""
-MOLE_SUDO_ESTABLISHED="false"
+# Preserve pre-auth from GUI hosts (MoleUI exports this before sourcing).
+MOLE_SUDO_ESTABLISHED="${MOLE_SUDO_ESTABLISHED:-false}"
 
 # Start sudo keepalive
 _start_sudo_keepalive() {

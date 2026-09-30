@@ -259,16 +259,18 @@ final class UninstallModel {
         let bundleID = app.bundleIdentifier ?? "unknown"
         let selected = "0|\(app.path.path)|\(app.name)|\(bundleID)|0|Unknown|0"
 
-        // Mark sudo as already established to prevent duplicate password prompts
+        // Pre-auth via SudoHelper, then keep the session for Mole core scripts.
+        // MOLE_SUDO_ESTABLISHED must be set AFTER sourcing (sudo.sh init would reset it).
         let script = """
         set -euo pipefail
         export MOLE_TEST_MODE=1
-        export MOLE_SUDO_ESTABLISHED=true
+        export MOLE_GUI=1
         ROOT=\(Self.shellEscape(root.path))
         APP_ENTRY=\(Self.shellEscape(selected))
         tmp_script=$(mktemp "${TMPDIR:-/tmp}/mole-uninstall-nomain.XXXXXX")
         awk '$0 != "main \\"$@\\"" {print}' "$ROOT/bin/uninstall.sh" | sed "s|^SCRIPT_DIR=.*|SCRIPT_DIR=\\"$ROOT/bin\\"|" > "$tmp_script"
         source "$tmp_script"
+        export MOLE_SUDO_ESTABLISHED=true
         selected_apps=("$APP_ENTRY")
         printf '\\n' | batch_uninstall_applications
         rm -f "$tmp_script"

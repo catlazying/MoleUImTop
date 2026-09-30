@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProcessListView: View {
     @Environment(MonitorModel.self) private var monitor
+    @Environment(LocalizationStore.self) private var localization
 
     @State private var searchText = ""
     @State private var sortColumn: ProcessSortColumn = .cpu
@@ -10,11 +11,21 @@ struct ProcessListView: View {
     @State private var actionError: String?
 
     private enum ProcessSortColumn: String, CaseIterable {
-        case name = "Process"
-        case pid = "PID"
-        case cpu = "CPU"
-        case memory = "Memory"
-        case gpu = "GPU"
+        case name
+        case pid
+        case cpu
+        case memory
+        case gpu
+
+        var titleKey: String {
+            switch self {
+            case .name: "processes.col.process"
+            case .pid: "processes.col.pid"
+            case .cpu: "processes.col.cpu"
+            case .memory: "processes.col.memory"
+            case .gpu: "processes.col.gpu"
+            }
+        }
     }
 
     var body: some View {
@@ -23,27 +34,28 @@ struct ProcessListView: View {
             Divider()
             if !monitor.isSupported {
                 ContentUnavailableView(
-                    "Apple Silicon Required",
+                    localization.t("processes.required.title"),
                     systemImage: "cpu",
-                    description: Text("Process GPU metrics require Apple Silicon monitoring.")
+                    description: Text(localization.t("processes.required.detail"))
                 )
             } else if case .failed(let message) = monitor.runtimeStatus, monitor.latestMetrics == nil {
                 VStack(spacing: 16) {
                     ContentUnavailableView(
-                        "Monitor Unavailable",
+                        localization.t("processes.unavailable.title"),
                         systemImage: "exclamationmark.triangle",
                         description: Text(message)
                     )
-                    Button("Retry") { monitor.retry() }
+                    Button(localization.t("monitor.retry")) { monitor.retry() }
                         .buttonStyle(.borderedProminent)
                 }
             } else {
                 VStack(spacing: 0) {
-                    if let title = monitor.runtimeStatus.bannerTitle,
-                       let message = monitor.runtimeStatus.bannerMessage
-                    {
+                    if let titleKey = monitor.runtimeStatus.bannerTitleKey {
+                        let message = monitor.runtimeStatus.bannerMessageKey.map { localization.t($0) }
+                            ?? monitor.runtimeStatus.bannerMessage
+                            ?? ""
                         MonitorStatusBanner(
-                            title: title,
+                            title: localization.t(titleKey),
                             message: message,
                             isRetryable: monitor.runtimeStatus.isRetryable,
                             onRetry: { monitor.retry() }
@@ -58,7 +70,7 @@ struct ProcessListView: View {
             monitor.start()
         }
         .alert(
-            "Terminate process?",
+            localization.t("processes.terminate.title"),
             isPresented: Binding(
                 get: { processPendingTerminate != nil },
                 set: {
@@ -69,17 +81,17 @@ struct ProcessListView: View {
             ),
             presenting: processPendingTerminate
         ) { proc in
-            Button("Cancel", role: .cancel) {
+            Button(localization.t("processes.terminate.cancel"), role: .cancel) {
                 processPendingTerminate = nil
             }
-            Button("Terminate", role: .destructive) {
+            Button(localization.t("processes.terminate.confirm"), role: .destructive) {
                 terminate(proc)
             }
         } message: { proc in
             Text("Send SIGTERM to \(proc.command) (PID \(proc.pid))?")
         }
         .alert(
-            "Terminate failed",
+            localization.t("processes.terminate.failed"),
             isPresented: Binding(
                 get: { actionError != nil },
                 set: {
@@ -98,18 +110,18 @@ struct ProcessListView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
             MoleHeroPanel(
-                eyebrow: "Monitor",
-                title: "Processes",
-                subtitle: "Search, sort, and terminate with confirmation. No automatic killing.",
+                eyebrow: localization.t("processes.hero.eyebrow"),
+                title: localization.t("processes.hero.title"),
+                subtitle: localization.t("processes.hero.subtitle"),
                 symbol: "list.bullet.rectangle"
             )
 
             HStack(spacing: 12) {
-                MoleSearchField(prompt: "Filter processes", text: $searchText)
+                MoleSearchField(prompt: localization.t("processes.filter"), text: $searchText)
                 Button {
                     monitor.refresh()
                 } label: {
-                    Label("Refresh", systemImage: "arrow.clockwise")
+                    Label(localization.t("processes.refresh"), systemImage: "arrow.clockwise")
                 }
                 .buttonStyle(.bordered)
             }
@@ -122,38 +134,42 @@ struct ProcessListView: View {
         return Group {
             if rows.isEmpty {
                 ContentUnavailableView(
-                    "No Processes",
+                    localization.t("processes.empty.title"),
                     systemImage: "magnifyingglass",
-                    description: Text(monitor.latestMetrics == nil ? "Waiting for monitor sample…" : "No matches.")
+                    description: Text(
+                        monitor.latestMetrics == nil
+                            ? localization.t("processes.empty.waiting")
+                            : localization.t("processes.empty.none")
+                    )
                 )
             } else {
                 Table(rows) {
-                    TableColumn(ProcessSortColumn.name.rawValue) { (proc: ProcessMetrics) in
+                    TableColumn(localization.t(ProcessSortColumn.name.titleKey)) { (proc: ProcessMetrics) in
                         Text(proc.command)
                             .lineLimit(1)
                             .help(proc.command)
                     }
                     .width(min: 160, ideal: 240)
 
-                    TableColumn(ProcessSortColumn.pid.rawValue) { proc in
+                    TableColumn(localization.t(ProcessSortColumn.pid.titleKey)) { proc in
                         Text("\(proc.pid)")
                             .monospacedDigit()
                     }
                     .width(60)
 
-                    TableColumn(ProcessSortColumn.cpu.rawValue) { proc in
+                    TableColumn(localization.t(ProcessSortColumn.cpu.titleKey)) { proc in
                         Text(String(format: "%.1f%%", proc.cpuPercent))
                             .monospacedDigit()
                     }
                     .width(70)
 
-                    TableColumn(ProcessSortColumn.memory.rawValue) { proc in
+                    TableColumn(localization.t(ProcessSortColumn.memory.titleKey)) { proc in
                         Text(String(format: "%.1f%%", proc.memoryPercent))
                             .monospacedDigit()
                     }
                     .width(80)
 
-                    TableColumn(ProcessSortColumn.gpu.rawValue) { proc in
+                    TableColumn(localization.t(ProcessSortColumn.gpu.titleKey)) { proc in
                         // Headless reports GPU as ms/s; display as approximate %.
                         Text(String(format: "%.1f%%", proc.gpuMsPerSec / 10.0))
                             .monospacedDigit()
@@ -167,7 +183,7 @@ struct ProcessListView: View {
                     .width(90)
 
                     TableColumn("") { proc in
-                        Button("Terminate") {
+                        Button(localization.t("processes.terminate.confirm")) {
                             processPendingTerminate = proc
                         }
                         .buttonStyle(.bordered)
@@ -190,7 +206,7 @@ struct ProcessListView: View {
                 .foregroundStyle(.secondary)
             Picker("Sort", selection: $sortColumn) {
                 ForEach(ProcessSortColumn.allCases, id: \.self) { column in
-                    Text(column.rawValue).tag(column)
+                    Text(localization.t(column.titleKey)).tag(column)
                 }
             }
             .pickerStyle(.segmented)

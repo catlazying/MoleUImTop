@@ -3,23 +3,24 @@ import SwiftUI
 /// Apple Silicon hardware monitor (mactop-backed). Separate from Mole Status dashboard.
 struct MonitorView: View {
     @Environment(MonitorModel.self) private var monitor
+    @Environment(LocalizationStore.self) private var localization
 
     var body: some View {
         Group {
             if !monitor.isSupported {
                 ContentUnavailableView(
-                    "Apple Silicon Required",
+                    localization.t("monitor.required.title"),
                     systemImage: "cpu",
-                    description: Text("Apple Silicon monitoring is unavailable on this Mac. Mole cleanup tools remain available.")
+                    description: Text(localization.t("monitor.required.detail"))
                 )
             } else if case .failed(let message) = monitor.runtimeStatus, monitor.latestMetrics == nil {
                 VStack(spacing: 16) {
                     ContentUnavailableView(
-                        "Monitor Unavailable",
+                        localization.t("monitor.unavailable.title"),
                         systemImage: "exclamationmark.triangle",
                         description: Text(message)
                     )
-                    Button("Retry") { monitor.retry() }
+                    Button(localization.t("monitor.retry")) { monitor.retry() }
                         .buttonStyle(.borderedProminent)
                 }
             } else if let metrics = monitor.latestMetrics {
@@ -34,18 +35,7 @@ struct MonitorView: View {
                             power: monitor.powerHistory,
                             dramBandwidth: monitor.dramBandwidthHistory
                         )
-                        equalHeightRow {
-                            cpuSection(metrics)
-                            gpuSection(metrics)
-                        }
-                        equalHeightRow {
-                            memorySection(metrics)
-                            powerThermalSection(metrics)
-                        }
-                        equalHeightRow {
-                            bandwidthSection(metrics)
-                            ioSection(metrics)
-                        }
+                        metricsGrid(metrics)
                         if !metrics.fans.isEmpty {
                             fansSection(metrics.fans)
                         }
@@ -55,8 +45,8 @@ struct MonitorView: View {
                 }
             } else {
                 MoleLoadingState(
-                    title: "Starting hardware monitor...",
-                    subtitle: monitor.isRunning ? "Waiting for first sample" : nil
+                    title: localization.t("monitor.starting"),
+                    subtitle: monitor.isRunning ? localization.t("monitor.waitingSample") : nil
                 )
             }
         }
@@ -69,11 +59,12 @@ struct MonitorView: View {
 
     @ViewBuilder
     private var statusBanners: some View {
-        if let title = monitor.runtimeStatus.bannerTitle,
-           let message = monitor.runtimeStatus.bannerMessage
-        {
+        if let titleKey = monitor.runtimeStatus.bannerTitleKey {
+            let message = monitor.runtimeStatus.bannerMessageKey.map { localization.t($0) }
+                ?? monitor.runtimeStatus.bannerMessage
+                ?? ""
             MonitorStatusBanner(
-                title: title,
+                title: localization.t(titleKey),
                 message: message,
                 isRetryable: monitor.runtimeStatus.isRetryable,
                 onRetry: { monitor.retry() }
@@ -84,33 +75,41 @@ struct MonitorView: View {
 
     // MARK: - Layout
 
-    private func equalHeightRow(
-        @ViewBuilder content: () -> TupleView<(some View, some View)>
-    ) -> some View {
-        let views = content()
-        return HStack(alignment: .top, spacing: 12) {
-            views.value.0.frame(maxHeight: .infinity, alignment: .top)
-            views.value.1.frame(maxHeight: .infinity, alignment: .top)
+    private var threeColumnGrid: [GridItem] {
+        [
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12),
+            GridItem(.flexible(), spacing: 12),
+        ]
+    }
+
+    private func metricsGrid(_ metrics: SystemMetrics) -> some View {
+        LazyVGrid(columns: threeColumnGrid, spacing: 12) {
+            cpuSection(metrics)
+            gpuSection(metrics)
+            memorySection(metrics)
+            powerThermalSection(metrics)
+            bandwidthSection(metrics)
+            ioSection(metrics)
         }
-        .fixedSize(horizontal: false, vertical: true)
     }
 
     private func header(_ m: SystemMetrics) -> some View {
         MoleHeroPanel(
-            eyebrow: "Monitor",
+            eyebrow: localization.t("monitor.hero.eyebrow"),
             title: m.systemInfo.name,
             subtitle: "\(m.systemInfo.coreCount) cores · GPU \(m.systemInfo.gpuCoreCount) · \(m.thermalState)",
             symbol: "gauge.with.dots.needle.67percent"
         ) {
             VStack(alignment: .trailing, spacing: 10) {
                 MoleMetricBadge(
-                    title: "CPU",
+                    title: localization.t("monitor.cpu"),
                     value: String(format: "%.0f%%", m.cpuUsage),
                     systemImage: "cpu",
                     tint: MoleTheme.pine
                 )
                 MoleMetricBadge(
-                    title: "GPU",
+                    title: localization.t("monitor.gpu"),
                     value: String(format: "%.0f%%", m.gpuUsage),
                     systemImage: "rectangle.3.group",
                     tint: MoleTheme.sky
@@ -124,7 +123,7 @@ struct MonitorView: View {
     private func cpuSection(_ m: SystemMetrics) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 8) {
-                Label("CPU", systemImage: "cpu").font(.headline)
+                Label(localization.t("monitor.cpu"), systemImage: "cpu").font(.headline)
                 metricRow("Total", String(format: "%.1f%%", m.cpuUsage), m.cpuUsage)
                 MiniSparklineView(data: monitor.cpuHistory, color: MoleTheme.pine)
                 if let e = m.eCluster {
@@ -154,7 +153,7 @@ struct MonitorView: View {
     private func gpuSection(_ m: SystemMetrics) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 8) {
-                Label("GPU", systemImage: "rectangle.3.group").font(.headline)
+                Label(localization.t("monitor.gpu"), systemImage: "rectangle.3.group").font(.headline)
                 metricRow("Active", String(format: "%.1f%%", m.gpuUsage), m.gpuUsage, color: MoleTheme.sky)
                 MiniSparklineView(data: monitor.gpuHistory, color: MoleTheme.sky)
                 Text("\(m.gpuMetrics.freqMHz) MHz · \(m.systemInfo.gpuCoreCount) cores")
@@ -177,7 +176,7 @@ struct MonitorView: View {
             : 0
         return GroupBox {
             VStack(alignment: .leading, spacing: 8) {
-                Label("Memory", systemImage: "memorychip").font(.headline)
+                Label(localization.t("monitor.memory"), systemImage: "memorychip").font(.headline)
                 metricRow("Used", String(format: "%.1f%%", usedPct), usedPct, color: .yellow)
                 MiniSparklineView(data: monitor.memoryHistory, color: .yellow)
                 Text("\(MetricsFormatter.humanBytes(m.memory.used)) / \(MetricsFormatter.humanBytes(m.memory.total))")
@@ -195,7 +194,7 @@ struct MonitorView: View {
     private func powerThermalSection(_ m: SystemMetrics) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 8) {
-                Label("Power / Thermal", systemImage: "thermometer.medium").font(.headline)
+                Label(localization.t("monitor.powerThermal"), systemImage: "thermometer.medium").font(.headline)
                 Text(String(format: "Total  %.1f W", m.socMetrics.totalPower))
                 Text(String(
                     format: "CPU %.1f · GPU %.1f · ANE %.1f · DRAM %.1f",
@@ -226,7 +225,7 @@ struct MonitorView: View {
     private func bandwidthSection(_ m: SystemMetrics) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 8) {
-                Label("DRAM Bandwidth", systemImage: "arrow.left.arrow.right").font(.headline)
+                Label(localization.t("monitor.dram"), systemImage: "arrow.left.arrow.right").font(.headline)
                 Text(String(format: "Read   %.2f GB/s", m.socMetrics.dramReadBWGBs))
                 Text(String(format: "Write  %.2f GB/s", m.socMetrics.dramWriteBWGBs))
                 Text(String(format: "Total  %.2f GB/s", m.socMetrics.dramBWCombinedGBs))
@@ -246,7 +245,7 @@ struct MonitorView: View {
     private func ioSection(_ m: SystemMetrics) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 8) {
-                Label("Disk / Network", systemImage: "externaldrive").font(.headline)
+                Label(localization.t("monitor.diskNet"), systemImage: "externaldrive").font(.headline)
                 Text(String(
                     format: "Disk R %.1f KB/s · W %.1f KB/s",
                     m.netDisk.readKBytesPerSec,
@@ -273,7 +272,7 @@ struct MonitorView: View {
     private func fansSection(_ fans: [FanMetrics]) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 8) {
-                Label("Fans (read-only)", systemImage: "fanblades").font(.headline)
+                Label(localization.t("monitor.fans"), systemImage: "fanblades").font(.headline)
                 ForEach(fans) { fan in
                     Text("\(fan.name)  \(fan.rpm) RPM  (\(fan.mode))")
                 }
@@ -287,7 +286,7 @@ struct MonitorView: View {
     private func systemSection(_ m: SystemMetrics) -> some View {
         GroupBox {
             VStack(alignment: .leading, spacing: 6) {
-                Label("System", systemImage: "info.circle").font(.headline)
+                Label(localization.t("monitor.system"), systemImage: "info.circle").font(.headline)
                 Text(m.systemInfo.name)
                 Text("E \(m.systemInfo.eCoreCount ?? 0) · P \(m.systemInfo.pCoreCount) · S \(m.systemInfo.sCoreCount ?? 0) · GPU \(m.systemInfo.gpuCoreCount)")
                     .foregroundStyle(.secondary)

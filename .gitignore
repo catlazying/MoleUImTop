@@ -36,6 +36,7 @@ test-results.json
 
 # Local analysis / build helpers
 .tmp-home/
+dist/
 
 # Bundled mactop binary (place locally or via build phase / just update-mactop)
 Resources/mactop/mactop
