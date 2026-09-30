@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: brew install create-dmg mole
+        run: brew install create-dmg mole mactop || brew install create-dmg mole
 
       - name: Import signing certificate
         env:
@@ -88,18 +88,27 @@ jobs:
             fi
           done
 
-          # 2. Sign the mole shell script wrapper if executable
+          # 2. Sign bundled mactop collector if present
+          MACTOP_BIN="$APP/Contents/Resources/mactop/mactop"
+          if [ -f "$MACTOP_BIN" ] && file "$MACTOP_BIN" | grep -q "Mach-O"; then
+            echo "Signing nested binary: $MACTOP_BIN"
+            codesign --force --timestamp --options runtime \
+              --entitlements MoleUI/BundledBinaries.entitlements \
+              --sign "$SIGN_ID" "$MACTOP_BIN"
+          fi
+
+          # 3. Sign the mole shell script wrapper if executable
           if [ -f "$MOLE_DIR/mole" ]; then
             codesign --force --timestamp --options runtime \
               --sign "$SIGN_ID" "$MOLE_DIR/mole" 2>/dev/null || true
           fi
 
-          # 3. Sign the main app bundle last
+          # 4. Sign the main app bundle last
           codesign --force --timestamp --options runtime \
             --entitlements MoleUI/MoleUI.entitlements \
             --sign "$SIGN_ID" "$APP"
 
-          # 4. Verify with Apple's recommended flags
+          # 5. Verify with Apple's recommended flags
           codesign -vvv --deep --strict "$APP"
           echo "All signatures verified OK"
 

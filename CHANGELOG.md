@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-09-30
+
+### Added
+- **Apple Silicon Hardware Monitor (Mole X)**
+  - Live CPU / GPU / memory / power / DRAM bandwidth charts via long-lived `mactop --headless`
+  - Process list with confirmed SIGTERM (no auto-kill)
+  - Dashboard compact hardware metrics card
+  - Error degrade / retry banners and release hardening (lifecycle, isolated collector HOME)
+  - Intel Macs keep Mole tools; Monitor shows unsupported gracefully
+  - Fan metrics remain read-only (no fan control)
+
+### Changed
+- Bundled release signing now includes nested `mactop` binary when present
+
 ## [0.1.4] - 2026-03-15
 
 ### Added
