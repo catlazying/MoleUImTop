@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-09-30
+
+### Added
+- **Settings language picker** (System / English / 한국어) with instant UI switching
+  - Localized sidebar, Status, Hardware Monitor, Processes, and Settings copy
+  - Mole CLI raw output remains in English
+
+### Fixed
+- GUI uninstall sudo path when `/dev/tty` is unavailable
+- Internal ad-hoc build recipe (`just build-internal`) for local `dist/` apps
+
 ## [0.1.5] - 2026-09-30
 
 ### Added
@@ -268,12 +279,13 @@ Official release with Mole CLI v1.29.0.
 - NavigationSplitView for native macOS experience
 - Requires macOS 14.0 (Sonoma) or later
 
-[Unreleased]: https://github.com/imnotnoahhh/MoleUI/compare/v0.1.4...HEAD
+[Unreleased]: https://github.com/catlazying/MoleUImTop/compare/v0.1.6...HEAD
+[0.1.6]: https://github.com/catlazying/MoleUImTop/releases/tag/v0.1.6
+[0.1.5]: https://github.com/catlazying/MoleUImTop/releases/tag/v0.1.5
 [0.1.4]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.4
 [0.1.3]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.3
 [0.1.2]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.2
 [0.1.2-beta.2]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.2-beta.2
 [0.1.2-beta.1]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.2-beta.1
-[0.1.2]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.2
 [0.1.1]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.1
 [0.1.0]: https://github.com/imnotnoahhh/MoleUI/releases/tag/v0.1.0
